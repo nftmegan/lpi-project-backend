@@ -10,6 +10,19 @@ exports.findAll = async (query, page, limit) => {
     }
 };
 
-exports.create = async (content) => {
-    
+exports.findOne = async (params) => {
+    return await User.findById(params.id);
+};
+
+exports.update = async (id, data) => {
+    console.log(User.findById(id));
+    try {
+        await User.findByIdAndUpdate(id, {"about_me": data.about_me});
+    } catch (e) {
+        if (e) {
+            console.log(e);
+            errors.push({ msg: e })
+            throw errors;
+        }
+    }
 };

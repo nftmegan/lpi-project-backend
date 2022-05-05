@@ -5,10 +5,18 @@ const CategorySchema  = new mongoose.Schema({
         type: String,
         unique: true
     },
+    description: {
+        type: String
+    },
     url: {
-      type: String,
-      unique: true
-  },
+        type: String,
+        unique: true
+    },
+    parent: {
+        type: mongoose.Schema.Types.ObjectId,
+        default: null,
+        ref: 'Category'
+    },
 })
 
 const Category = mongoose.model('Category', CategorySchema)

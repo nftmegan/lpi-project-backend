@@ -1,7 +1,13 @@
 let User = require('../models/user.model');
-  
+
+var jwt = require("jsonwebtoken");
+var bcrypt = require("bcryptjs");
+
 exports.signup = async (content) => {
     const newUser = new User(content);
+    newUser.password = bcrypt.hashSync(newUser.password, 8)
+
+    //console.log(newUser);
 
     let errors = [];
 
@@ -15,4 +21,46 @@ exports.signup = async (content) => {
             throw errors;
         }
     }
+};
+
+exports.login = async (content) => {
+    let errors = [];
+
+    const foundUser = await User.findOne({
+        email: content.email
+    })
+    
+    if(!foundUser) {
+        errors.push({ msg: 'User does not exists' })
+        throw errors;
+    }
+
+    try {
+        var passwordMatch = bcrypt.compareSync(content.password, foundUser.password);
+    }
+    catch(e)
+    {
+        console.log(e);
+    }
+
+    if(!passwordMatch) {
+        errors.push({ msg: "Password don't match" })
+        throw errors;
+    }
+    
+    var token = jwt.sign({ id: foundUser._id }, "bezkoder-secret-key", {
+        expiresIn: 86400 // 24 hours
+    });
+
+    var return_data = {
+        id: foundUser._id,
+        email: foundUser.email,
+        accessToken: token
+    }
+
+    console.log(return_data);
+
+    return return_data;
+
+    //console.log(foundUser);
 };

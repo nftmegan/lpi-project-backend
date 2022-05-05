@@ -1,10 +1,10 @@
-const category_service = require('../services/category.service');
+const address_service = require('../services/address.service');
 
 exports.create = async(req, res, next) => {
     const data = req.body;
-    console.log(req.file);
+
     try {
-        await category_service.create(data);
+        await address_service.create(data);
         res.status(200).send({ status: 'OK'});
         next();
     } catch(errors) {
@@ -14,7 +14,7 @@ exports.create = async(req, res, next) => {
 
 exports.findAll = async(req, res, next) => {
     try {
-        const data = await category_service.findAll();
+        const data = await address_service.findAll();
         setTimeout((() => {
             res.status(200).send(data);
             next();
@@ -29,7 +29,7 @@ exports.findOne = async(req, res, next) => {
     const id = req.params;
     console.log(id);
     try {
-        const data = await category_service.findOne(id);
+        const data = await address_service.findOne(id);
         setTimeout((() => {
             res.status(200).send(data);
             next();
@@ -44,7 +44,7 @@ exports.delete = async(req, res, next) => {
     const params = req.params;
     
     try {
-        const data = await category_service.delete(params);
+        const data = await address_service.delete(params);
         res.status(200).send(data);
         next();
     } catch(error) {

@@ -6,8 +6,8 @@ if (envFound.error) {
 }
 
 module.exports = {
-  "port": parseInt(process.env.PORT, 10),
-  "api": {
-    prefix: '/api',
-  }
+    "port": parseInt(process.env.PORT, 10),
+    "api": {
+      prefix: '/api',
+    }
 };

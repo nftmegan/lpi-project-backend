@@ -1,4 +1,4 @@
-const product_service = require('../services/product.service');
+const order_service = require('../services/order.service');
 
 exports.create = async(req, res, next) => {
     var params = req.body;
@@ -10,7 +10,7 @@ exports.create = async(req, res, next) => {
     }
 
     try {
-        await product_service.create(params);
+        await order_service.create(params);
         res.status(200).send({ status: 'OK'});
         next();
     } catch(errors) {
@@ -20,7 +20,7 @@ exports.create = async(req, res, next) => {
 
 exports.findAll = async(req, res, next) => {
     try {
-        const data = await product_service.findAll();
+        const data = await order_service.findAll();
         res.status(200).send(data);
         next();
     } catch(error) {
@@ -33,7 +33,7 @@ exports.findOne = async(req, res, next) => {
     const params = req.params;
     
     try {
-        const data = await product_service.findOne(params);
+        const data = await order_service.findOne(params);
         res.status(200).send(data);
         next();
     } catch(error) {
@@ -46,11 +46,23 @@ exports.delete = async(req, res, next) => {
     const params = req.params;
     
     try {
-        const data = await product_service.delete(params);
+        const data = await order_service.delete(params);
         res.status(200).send(data);
         next();
     } catch(error) {
         console.log(error.message);
         res.sendStatus(500) && next(error);
+    }
+};
+
+exports.update = async(req, res, next) => {
+    const params = req.params;
+    
+    try {
+        const data = await order_service.update(params);
+        res.status(200).send(data);
+        next();
+    } catch(error) {
+        return res.status(400).json({ errors: errors });
     }
 };

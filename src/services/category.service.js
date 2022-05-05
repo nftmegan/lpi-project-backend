@@ -3,7 +3,8 @@ let Category = require('../models/category.model');
 exports.create = async (content) => {
     const newCategory = new Category(content);
     newCategory.url = newCategory.name.replace(/\s/g, '-').toLowerCase();
-    console.log(newCategory.url)
+    newCategory.parent = content.parent == "" ? null : content.parent
+    console.log(newCategory)
 
     let errors = [];
 
@@ -12,8 +13,14 @@ exports.create = async (content) => {
         console.log("Sucessfully added a category to the database.")
     }
     catch (e) {
-        if (e && e.code === 11000) {
-            errors.push({ msg: 'Category already exists' })
+        if (e) {
+            if(e.code === 11000)
+                errors.push({ msg: 'Category already exists' })
+
+            errors.push({ msg: e.code })
+
+            console.log(e);
+
             throw errors;
         }
     }
@@ -21,4 +28,12 @@ exports.create = async (content) => {
 
 exports.findAll = async () => {
     return await Category.find({});
+};
+
+exports.findOne = async (params) => {
+    return await Category.findById(params.id);
+};
+
+exports.delete = async (params) => {
+    return await Category.deleteOne({ _id: params.id });
 };

@@ -28,8 +28,10 @@ const configApp = async () => {
       };
     app.use(cors(corsOptions));
 
-    // Middleware that transforms the raw string of req.body into json
     app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded());
+    // in latest body-parser use like below.
+    app.use(bodyParser.urlencoded({ extended: true }));
 
     app.use(config.api.prefix, routes);
 }
