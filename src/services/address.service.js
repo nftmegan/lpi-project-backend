@@ -17,7 +17,6 @@ exports.create = async (params) => {
         errors.push({ msg: 'Invalid JWT' })
         throw errors;
     }
-    
 
     try {
         await newAddress.save();

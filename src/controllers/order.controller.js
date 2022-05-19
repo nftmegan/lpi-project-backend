@@ -62,7 +62,7 @@ exports.update = async(req, res, next) => {
         const data = await order_service.update(params);
         res.status(200).send(data);
         next();
-    } catch(error) {
+    } catch(errors) {
         return res.status(400).json({ errors: errors });
     }
 };

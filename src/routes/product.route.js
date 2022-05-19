@@ -21,6 +21,7 @@ var upload = multer({ storage: storage });
 router.post("/", upload.single('photo'), product_validation.create, product_controller.create);
 router.get("/", product_controller.findAll);
 router.get("/:id", product_controller.findOne);
+router.delete("/", product_controller.deleteAll);
 router.delete("/:id", product_controller.delete);
 
 /*

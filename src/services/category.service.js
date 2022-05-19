@@ -27,7 +27,7 @@ exports.create = async (content) => {
 };
 
 exports.findAll = async () => {
-    return await Category.find({});
+    return await Category.find({}).populate('parent');
 };
 
 exports.findOne = async (params) => {

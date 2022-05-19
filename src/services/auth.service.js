@@ -1,6 +1,7 @@
 let User = require('../models/user.model');
 
-var jwt = require("jsonwebtoken");
+const { issueToken } = require('../utils/jwt')
+
 var bcrypt = require("bcryptjs");
 
 exports.signup = async (content) => {
@@ -48,9 +49,7 @@ exports.login = async (content) => {
         throw errors;
     }
     
-    var token = jwt.sign({ id: foundUser._id }, "bezkoder-secret-key", {
-        expiresIn: 86400 // 24 hours
-    });
+    var token = issueToken(foundUser._id);
 
     var return_data = {
         id: foundUser._id,

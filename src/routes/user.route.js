@@ -20,14 +20,14 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 router.get("/", role_middleware.user, user_controller.findAll);
-router.get("/:id", role_middleware.user, user_controller.findOne);
-router.put("/:id", role_middleware.user, upload.single('photo'), user_controller.update);
+router.get("/:userId", role_middleware.user, user_controller.findById);
+router.put("/:userId", role_middleware.user, upload.single('photo'), user_controller.update);
 
-/*
-
-router.put("/:id", posts.update);
-router.delete("/:id", posts.delete);
-router.delete("/", posts.deleteAll);
-*/
+// USER CART ROUTES
+router.get("/:userId/cart", role_middleware.user, user_controller.getUserCart);
+router.post("/:userId/cart/", role_middleware.user, user_controller.addProductToCart);
+router.put("/:userId/cart/:productId", role_middleware.user, user_controller.updateEntryOnCart);
+router.delete("/:userId/cart/", role_middleware.user, user_controller.removeAllFromCart);
+router.delete("/:userId/cart/:productId", role_middleware.user, user_controller.removeEntryFromCart);
 
 module.exports = router;

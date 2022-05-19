@@ -21,6 +21,10 @@ const ProductSchema  = new mongoose.Schema(
             get: v => (v/100).toFixed(2),
             set: v => v*100
         },
+        discount: {
+            type: Number,
+            default: 10
+        },
         category: { 
             type: mongoose.Schema.Types.ObjectId,
             default: null,

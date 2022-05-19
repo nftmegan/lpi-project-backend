@@ -1,10 +1,10 @@
 let user_service = require('../services/user.service');
 
-var jwt = require("jsonwebtoken");
+const { validateToken } = require('../utils/jwt');
 
-exports.admin = [
+exports.user = [
     async (req, res, next) => {
-        roleCheck(2, req, res, next)
+        roleCheck(0, req, res, next)
     }
 ]
 
@@ -14,49 +14,36 @@ exports.mod = [
     }
 ]
 
-exports.user = [
+exports.admin = [
     async (req, res, next) => {
-        roleCheck(0, req, res, next)
+        roleCheck(2, req, res, next)
     }
 ]
 
-const roleCheck = async (roleNeeded, req, res, next) => {
+const roleCheck = async (minRole, req, res, next) => {
     let errors = [];
     
-    if(!req.headers.authorization) {
-        errors.push({ msg: 'No bearer' })
-        return res.status(400).json({ errors: errors });
+    var tokenPayload;
+    try {
+        tokenPayload = validateToken(req.headers.authorization);
     }
-    
-    const authorization = (req.headers.authorization).split(' ');
-    if (authorization[0] !== 'Bearer') {
-        errors.push({ msg: 'No bearer' })
+    catch(errors) {
         return res.status(400).json({ errors: errors });
     }
 
-    var decoded;
-    
-    try {
-        decoded = jwt.verify(authorization[1], "bezkoder-secret-key");
-    }
-    catch(e) {
-        errors.push({ msg: 'No auth' })
-        return res.status(400).json({ errors: errors });
-    }
-    
-    var foundUser = await user_service.findOne({"id": decoded.id})
+    var foundUser = await user_service.findById(tokenPayload.id)
 
     if(!foundUser) {
         errors.push({ msg: 'User doesnt exist' })
-        
         return res.status(400).json({ errors: errors });
     }
 
-    if(foundUser.role < roleNeeded) {
+    if(foundUser.role < minRole) {
         errors.push({ msg: 'No permission' })
-        
         return res.status(400).json({ errors: errors });
     }
+
+    req.tokenPayload = tokenPayload;
 
     next();
 }

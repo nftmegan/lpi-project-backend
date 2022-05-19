@@ -13,6 +13,7 @@ router.use('/category', require("./category.route"));
 router.use('/product', require("./product.route"));
 router.use('/address', require("./address.route"));
 router.use('/order', require("./order.route"));
+router.use('/cart', require("./cart.route"));
 
 router.get('/uploads/:id', (req, res) => {
     let indexPath = path.join(__dirname, `../uploads/${req.params.id}`);
