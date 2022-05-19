@@ -19,7 +19,7 @@ var storage = multer.diskStorage({
 })
 var upload = multer({ storage: storage });
 
-router.get("/", role_middleware.user, user_controller.findAll);
+router.get("/", /*role_middleware.user, */user_controller.findAll);
 router.get("/:userId", role_middleware.user, user_controller.findById);
 router.put("/:userId", role_middleware.user, upload.single('photo'), user_controller.update);
 
